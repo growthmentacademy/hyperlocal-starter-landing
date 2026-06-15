@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Hyperlocal Academy!</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #050f08;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,255,135,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Confetti dots */
+  .dot {
+    position: fixed;
+    border-radius: 50%;
+    animation: fall linear infinite;
+    opacity: 0;
+  }
+  @keyframes fall {
+    0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  .card {
+    background: #0d1f11;
+    border: 2px solid #00ff87;
+    border-radius: 28px;
+    padding: 48px 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 60px rgba(0,255,135,0.1);
+    animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  @keyframes cardIn {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .check-circle {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #00ff87, #00cc6a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 32px;
+    animation: popIn 0.4s 0.3s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 900;
+    color: #00ff87;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #a8c8b0;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .subtitle strong { color: #f7f4ef; }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #1a3320, transparent);
+    margin: 0 0 28px;
+  }
+
+  /* Telegram Access Card */
+  .tg-card {
+    background: #0a1a0d;
+    border: 1.5px solid #1a4025;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 24px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tg-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00ff87, #00cc6a, #00ff87);
+  }
+
+  .tg-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .tg-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #0088cc, #006aaa);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .tg-label {
+    font-size: 12px;
+    color: #6aad7e;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 3px;
+  }
+
+  .tg-name {
+    font-size: 17px;
+    font-weight: 800;
+    color: #f7f4ef;
+  }
+
+  .tg-join-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #00ff87, #00cc6a);
+    color: #050f08;
+    text-decoration: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    transition: opacity 0.2s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .tg-join-btn:hover {
+    opacity: 0.88;
+    transform: scale(0.98);
+  }
+
+  .tg-perks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .tg-perk {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: #6aad7e;
+  }
+
+  .tg-perk::before {
+    content: "✓";
+    color: #00ff87;
+    font-weight: 800;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* Steps */
+  .steps {
+    text-align: left;
+    margin-bottom: 28px;
+  }
+
+  .steps-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f7f4ef;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .step-num {
+    width: 24px;
+    height: 24px;
+    background: #1a3320;
+    border: 1px solid #00ff87;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #00ff87;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-text {
+    font-size: 13px;
+    color: #a8c8b0;
+    line-height: 1.5;
+  }
+
+  .step-text strong { color: #f7f4ef; }
+
+  /* Footer note */
+  .footer-note {
+    font-size: 12px;
+    color: #3d6b4a;
+    border-top: 1px solid #1a3320;
+    padding-top: 20px;
+    line-height: 1.6;
+  }
+
+  /* Brand */
+  .brand {
+    margin-top: 28px;
+    font-size: 13px;
+    color: #3d6b4a;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .brand span { color: #00ff87; }
+
+  @media (max-width: 480px) {
+    .card { padding: 36px 24px; }
+    h1 { font-size: 24px; }
+    .tg-perks { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Confetti dots -->
+<script>
+  var colors = ['#00ff87','#00cc6a','#ffd166','#06d6a0','#f7f4ef'];
+  for (var i = 0; i < 22; i++) {
+    var d = document.createElement('div');
+    d.className = 'dot';
+    var size = Math.random() * 8 + 4;
+    d.style.cssText = [
+      'width:'  + size + 'px',
+      'height:' + size + 'px',
+      'left:'   + Math.random() * 100 + 'vw',
+      'top:'    + -(Math.random() * 20) + 'px',
+      'background:' + colors[Math.floor(Math.random() * colors.length)],
+      'animation-duration:' + (Math.random() * 4 + 3) + 's',
+      'animation-delay:'    + (Math.random() * 4)     + 's'
+    ].join(';');
+    document.body.appendChild(d);
+  }
+</script>
+
+<div class="card">
+
+  <!-- Success check -->
+  <div class="check-circle">✓</div>
+
+  <h1>Payment Confirmed!</h1>
+  <p class="subtitle">
+    Your enrollment in <strong>Hyperlocal Academy — Starter</strong> is complete. Welcome to the Academy!
+  </p>
+
+  <div class="divider"></div>
+
+  <!-- Telegram Access -->
+  <div class="tg-card">
+    <div class="tg-header">
+      <div class="tg-icon">✈️</div>
+      <div>
+        <div class="tg-label">Your Private Community</div>
+        <div class="tg-name">Hyperlocal Academy — Starter1</div>
+      </div>
+    </div>
+
+    <a href="https://t.me/HyperlocalAcademy1" target="_blank" class="tg-join-btn">
+      💬 Join Telegram Channel
+    </a>
+
+    <div class="tg-perks">
+      <div class="tg-perk">Course materials</div>
+      <div class="tg-perk">Direct Q&A support</div>
+      <div class="tg-perk">Video modules</div>
+      <div class="tg-perk">Founding community</div>
+    </div>
+  </div>
+
+  <!-- Next Steps -->
+  <div class="steps">
+    <div class="steps-title">📋 What to do next</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        Click <strong>Join Telegram Channel</strong> above — you'll be added to the private group instantly
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        Inside Telegram you'll find all <strong>5 video modules</strong> and your PDF guides
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        Introduce yourself in the group — your <strong>Founding Member badge</strong> will be sent within 24 hours
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">
+    If you face any issues joining, reach out via the Telegram channel. All course materials will be available inside within 24 hours of joining.
+  </p>
+
+</div>
+
+<div class="brand">Hyperlocal Academy <span>·</span> Powered by Growthment</div>
+
+</body>
+</html>
