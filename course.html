@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyperlocal Academy — Starter Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#050f08;color:#f7f4ef;min-height:100vh}
+/* NAV */
+.nav{background:rgba(5,15,8,0.96);border-bottom:1px solid #1a3320;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-icon{width:36px;height:36px;background:linear-gradient(135deg,#00ff87,#00cc6a);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.nav-name{font-size:15px;font-weight:800;color:#f7f4ef}
+.nav-name span{color:#00ff87}
+.nav-right{display:flex;align-items:center;gap:12px}
+.welcome{font-size:13px;color:#6aad7e;font-weight:600}
+.welcome span{color:#00ff87}
+.logout-btn{background:#1a3320;border:1px solid #2a4d30;color:#6aad7e;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
+.logout-btn:hover{border-color:#00ff87;color:#00ff87}
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1f10,#050f08);border-bottom:1px solid #1a3320;padding:40px 24px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(circle,rgba(0,255,135,0.06) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:#0d2a14;border:1px solid #1a4020;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;color:#6aad7e;margin-bottom:14px;letter-spacing:0.5px}
+.hero h1{font-size:clamp(20px,4vw,32px);font-weight:900;color:#f7f4ef;margin-bottom:8px;line-height:1.2}
+.hero h1 span{color:#00ff87}
+.hero-sub{font-size:14px;color:#6aad7e;max-width:480px;margin:0 auto 22px;line-height:1.6}
+.chips{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.chip{background:#0d1f11;border:1px solid #1a3320;border-radius:10px;padding:9px 16px;font-size:12px;font-weight:700;color:#a8c8b0;display:flex;align-items:center;gap:6px}
+.chip .n{color:#00ff87;font-size:15px}
+/* MAIN */
+.main{max-width:840px;margin:0 auto;padding:32px 20px 60px}
+/* MODULE */
+.module{background:#0d1f11;border:1.5px solid #1a3320;border-radius:20px;margin-bottom:18px;overflow:hidden;transition:border-color 0.2s}
+.module:hover{border-color:#00ff8730}
+.mod-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;user-select:none}
+.mod-left{display:flex;align-items:center;gap:14px}
+.mod-num{width:38px;height:38px;background:linear-gradient(135deg,#00ff87,#00cc6a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#050f08;flex-shrink:0}
+.mod-title{font-size:15px;font-weight:800;color:#f7f4ef;margin-bottom:3px}
+.mod-meta{font-size:12px;color:#6aad7e;font-weight:600}
+.mod-arrow{font-size:16px;color:#6aad7e;transition:transform 0.3s}
+.module.open .mod-arrow{transform:rotate(180deg)}
+.mod-body{display:none;border-top:1px solid #1a3320;padding:4px 24px 20px}
+.module.open .mod-body{display:block}
+/* LESSON */
+.lesson{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid #112218}
+.lesson:last-child{border-bottom:none}
+.l-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.l-icon.v{background:#0d2a14;border:1px solid #1a4020}
+.l-icon.p{background:#2a1a08;border:1px solid #4d3010}
+.l-icon.t{background:#0a1a2a;border:1px solid #1a3050}
+.l-info{flex:1}
+.l-title{font-size:14px;font-weight:700;color:#f7f4ef;margin-bottom:2px}
+.l-desc{font-size:12px;color:#6aad7e}
+.l-btn{padding:8px 16px;border-radius:9px;font-size:12px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:opacity 0.2s,transform 0.2s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.l-btn:hover{opacity:0.85;transform:scale(0.97)}
+.btn-v{background:linear-gradient(135deg,#00ff87,#00cc6a);color:#050f08}
+.btn-p{background:linear-gradient(135deg,#ffd166,#e6b800);color:#050f08}
+.btn-t{background:linear-gradient(135deg,#4fc3f7,#0288d1);color:#050f08}
+.btn-soon{background:#1a3320;color:#3d6b4a;border:1px solid #2a4d30;cursor:default}
+.btn-soon:hover{opacity:1;transform:none}
+/* SUPPORT */
+.support{background:#0a1a0d;border:1.5px solid #1a3320;border-radius:16px;padding:24px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.support h3{font-size:15px;font-weight:800;color:#f7f4ef;margin-bottom:4px}
+.support p{font-size:13px;color:#6aad7e}
+.support-btn{padding:11px 22px;background:#1a3320;border:1.5px solid #00ff87;color:#00ff87;border-radius:11px;font-size:13px;font-weight:800;text-decoration:none;transition:background 0.2s,color 0.2s;font-family:'Plus Jakarta Sans',sans-serif}
+.support-btn:hover{background:#00ff87;color:#050f08}
+@media(max-width:600px){
+  .nav-right .welcome{display:none}
+  .mod-header{padding:16px 18px}
+  .mod-body{padding:4px 18px 18px}
+  .lesson{gap:10px}
+  .l-btn{padding:7px 12px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-icon">🎓</div>
+    <div class="nav-name">Hyperlocal <span>Academy</span></div>
+  </div>
+  <div class="nav-right">
+    <span class="welcome">Welcome, <span id="studentName">Student</span></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🎓 Starter Course</div>
+  <h1>Hyperlocal Academy<br><span>Starter Course</span></h1>
+  <p class="hero-sub">5 modules · Videos · PDF guides · Live Revenue Calculator. Everything to start your hyperlocal business.</p>
+  <div class="chips">
+    <div class="chip"><span class="n">5</span> Modules</div>
+    <div class="chip"><span class="n">5</span> Videos</div>
+    <div class="chip"><span class="n">4</span> PDF Guides</div>
+    <div class="chip"><span class="n">1</span> Live Tool</div>
+  </div>
+</div>
+
+<!-- COURSE CONTENT -->
+<div class="main">
+
+  <!-- MODULE 1 -->
+  <div class="module open" id="mod1">
+    <div class="mod-header" onclick="toggle('mod1')">
+      <div class="mod-left">
+        <div class="mod-num">1</div>
+        <div>
+          <div class="mod-title">What is Hyperlocal Commerce?</div>
+          <div class="mod-meta">1 Video · 1 PDF · 15 min</div>
+        </div>
+      </div>
+      <div class="mod-arrow">▼</div>
+    </div>
+    <div class="mod-body">
+      <div class="lesson">
+        <div class="l-icon v">🎬</div>
+        <div class="l-info">
+          <div class="l-title">Module 1 — Introduction Video</div>
+          <div class="l-desc">What is hyperlocal, why it works in India, real Tamil Nadu examples</div>
+        </div>
+        <a href="YOUR_MODULE1_VIDEO_LINK" target="_blank" class="l-btn btn-v">▶ Watch</a>
+      </div>
+      <div class="lesson">
+        <div class="l-icon p">📄</div>
+        <div class="l-info">
+          <div class="l-title">Hyperlocal Business Opportunity Guide</div>
+          <div class="l-desc">Market data, South India examples, business model comparison — 8 pages</div>
+        </div>
+        <a href="YOUR_MODULE1_PDF_LINK" target="_blank" class="l-btn btn-p">⬇ Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 2 -->
+  <div class="module" id="mod2">
+    <div class="mod-header" onclick="toggle('mod2')">
+      <div class="mod-left">
+        <div class="mod-num">2</div>
+        <div>
+          <div class="mod-title">The Market Opportunity Right Now</div>
+          <div class="mod-meta">1 Video · 15 min</div>
+        </div>
+      </div>
+      <div class="mod-arrow">▼</div>
+    </div>
+    <div class="mod-body">
+      <div class="lesson">
+        <div class="l-icon v">🎬</div>
+        <div class="l-info">
+          <div class="l-title">Module 2 — Market Opportunity Video</div>
+          <div class="l-desc">Why now is the right time, South India hyperlocal data, who is making money</div>
+        </div>
+        <a href="YOUR_MODULE2_VIDEO_LINK" target="_blank" class="l-btn btn-v">▶ Watch</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 3 -->
+  <div class="module" id="mod3">
+    <div class="mod-header" onclick="toggle('mod3')">
+      <div class="mod-left">
+        <div class="mod-num">3</div>
+        <div>
+          <div class="mod-title">Types of Hyperlocal Business Models</div>
+          <div class="mod-meta">1 Video · 1 PDF · 15 min</div>
+        </div>
+      </div>
+      <div class="mod-arrow">▼</div>
+    </div>
+    <div class="mod-body">
+      <div class="lesson">
+        <div class="l-icon v">🎬</div>
+        <div class="l-info">
+          <div class="l-title">Module 3 — Business Models Video</div>
+          <div class="l-desc">Platform vs delivery partner vs vendor model — which suits you</div>
+        </div>
+        <a href="YOUR_MODULE3_VIDEO_LINK" target="_blank" class="l-btn btn-v">▶ Watch</a>
+      </div>
+      <div class="lesson">
+        <div class="l-icon p">📄</div>
+        <div class="l-info">
+          <div class="l-title">City-wise Product Demand Cheat Sheet</div>
+          <div class="l-desc">What sells fastest in Chennai, Coimbatore, Madurai, Salem, Trichy</div>
+        </div>
+        <a href="YOUR_MODULE3_PDF_LINK" target="_blank" class="l-btn btn-p">⬇ Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 4 -->
+  <div class="module" id="mod4">
+    <div class="mod-header" onclick="toggle('mod4')">
+      <div class="mod-left">
+        <div class="mod-num">4</div>
+        <div>
+          <div class="mod-title">How the Money Works</div>
+          <div class="mod-meta">1 Video · 1 PDF · 15 min</div>
+        </div>
+      </div>
+      <div class="mod-arrow">▼</div>
+    </div>
+    <div class="mod-body">
+      <div class="lesson">
+        <div class="l-icon v">🎬</div>
+        <div class="l-info">
+          <div class="l-title">Module 4 — Revenue Streams Video</div>
+          <div class="l-desc">Order value income, delivery income, subscription fees — explained simply</div>
+        </div>
+        <a href="YOUR_MODULE4_VIDEO_LINK" target="_blank" class="l-btn btn-v">▶ Watch</a>
+      </div>
+      <div class="lesson">
+        <div class="l-icon p">📄</div>
+        <div class="l-info">
+          <div class="l-title">Your First 10 Orders Checklist</div>
+          <div class="l-desc">Practical first steps — 1 page action checklist</div>
+        </div>
+        <a href="YOUR_MODULE4_PDF_LINK" target="_blank" class="l-btn btn-p">⬇ Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 5 -->
+  <div class="module" id="mod5">
+    <div class="mod-header" onclick="toggle('mod5')">
+      <div class="mod-left">
+        <div class="mod-num">5</div>
+        <div>
+          <div class="mod-title">Your Income Calculator — Live Tool</div>
+          <div class="mod-meta">1 Video · Live Tool · 15 min</div>
+        </div>
+      </div>
+      <div class="mod-arrow">▼</div>
+    </div>
+    <div class="mod-body">
+      <div class="lesson">
+        <div class="l-icon v">🎬</div>
+        <div class="l-info">
+          <div class="l-title">Module 5 — Calculator Walkthrough Video</div>
+          <div class="l-desc">How to use the Revenue Calculator, what the numbers mean, realistic targets</div>
+        </div>
+        <a href="YOUR_MODULE5_VIDEO_LINK" target="_blank" class="l-btn btn-v">▶ Watch</a>
+      </div>
+      <div class="lesson">
+        <div class="l-icon t">🛠️</div>
+        <div class="l-info">
+          <div class="l-title">Hyperlocal Revenue Calculator</div>
+          <div class="l-desc">Your exclusive access — calculate your daily and monthly income instantly</div>
+        </div>
+        <a href="https://quickcommercerevenuecalculator.netlify.app" target="_blank" class="l-btn btn-t">🚀 Open Tool</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPPORT -->
+  <div class="support">
+    <div>
+      <h3>Need help or have a question?</h3>
+      <p>Reach out via Telegram — we respond within 24 hours</p>
+    </div>
+    <a href="https://t.me/HyperlocalAcademy1" target="_blank" class="support-btn">💬 Contact Support</a>
+  </div>
+
+</div>
+
+<script>
+// Auth guard — redirect to login if not verified
+(function(){
+  var name   = sessionStorage.getItem('ha_name');
+  var mobile = sessionStorage.getItem('ha_mobile');
+  if (!name || !mobile) { window.location.href = 'login.html'; return; }
+  document.getElementById('studentName').textContent = name;
+})();
+
+function logout() {
+  sessionStorage.clear();
+  window.location.href = 'login.html';
+}
+
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+</script>
+</body>
+</html>

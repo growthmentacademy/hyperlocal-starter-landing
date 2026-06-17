@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyperlocal Academy — Student Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#050f08;min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:24px;position:relative;overflow:hidden;
+}
+body::before{
+  content:'';position:fixed;top:-200px;left:50%;
+  transform:translateX(-50%);width:700px;height:700px;
+  background:radial-gradient(circle,rgba(0,255,135,0.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:32px;animation:fadeDown 0.5s ease}
+.brand-icon{width:46px;height:46px;background:linear-gradient(135deg,#00ff87,#00cc6a);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.brand-name{font-size:18px;font-weight:800;color:#f7f4ef}
+.brand-name span{color:#00ff87}
+.card{
+  background:#0d1f11;border:1.5px solid #1a3320;
+  border-radius:24px;padding:44px 40px;
+  width:100%;max-width:420px;
+  animation:fadeUp 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes fadeUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeDown{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+h1{font-size:24px;font-weight:900;color:#f7f4ef;margin-bottom:8px}
+.subtitle{font-size:14px;color:#6aad7e;margin-bottom:32px;line-height:1.6}
+.input-label{font-size:12px;font-weight:700;color:#6aad7e;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:block}
+.input-wrap{position:relative;margin-bottom:20px}
+.input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}
+.input-field{
+  width:100%;padding:15px 18px 15px 50px;
+  background:#0a1a0d;border:1.5px solid #1a3320;
+  border-radius:12px;font-size:17px;font-weight:700;
+  color:#f7f4ef;font-family:'Plus Jakarta Sans',sans-serif;
+  letter-spacing:2px;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.input-field:focus{border-color:#00ff87;box-shadow:0 0 0 3px rgba(0,255,135,0.1)}
+.input-field::placeholder{color:#3d6b4a;font-weight:400;letter-spacing:0}
+.login-btn{
+  width:100%;padding:16px 20px;
+  background:linear-gradient(135deg,#00ff87,#00cc6a);
+  color:#050f08;border:none;border-radius:14px;
+  font-size:16px;font-weight:800;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:10px;
+  transition:opacity 0.2s,transform 0.2s;
+}
+.login-btn:hover{opacity:0.88;transform:scale(0.99)}
+.login-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.spinner{width:18px;height:18px;border:2.5px solid rgba(5,15,8,0.3);border-top-color:#050f08;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.msg{margin-top:16px;padding:14px 18px;border-radius:12px;font-size:14px;font-weight:600;display:none;animation:fadeUp 0.3s ease;line-height:1.5}
+.msg-error{background:#1a0808;border:1px solid #ff4444;color:#ff8080}
+.msg-success{background:#0a1f10;border:1px solid #00ff87;color:#00ff87}
+.note{margin-top:28px;padding-top:20px;border-top:1px solid #1a3320;font-size:12px;color:#3d6b4a;text-align:center;line-height:1.7}
+@media(max-width:480px){.card{padding:32px 22px}h1{font-size:21px}}
+</style>
+</head>
+<body>
+
+<div class="brand">
+  <div class="brand-icon">🎓</div>
+  <div class="brand-name">Hyperlocal <span>Academy</span></div>
+</div>
+
+<div class="card">
+  <h1>Student Login</h1>
+  <p class="subtitle">Enter the mobile number you used when purchasing the course.</p>
+
+  <label class="input-label">Your Mobile Number</label>
+  <div class="input-wrap">
+    <span class="input-icon">📱</span>
+    <input
+      type="tel" id="mobileInput"
+      class="input-field"
+      placeholder="10-digit number"
+      maxlength="10" inputmode="numeric"
+      onkeypress="return event.charCode>=48&&event.charCode<=57"
+      onkeydown="if(event.key==='Enter')checkAccess()"
+    >
+  </div>
+
+  <button class="login-btn" id="loginBtn" onclick="checkAccess()">
+    <span id="btnText">Access My Course →</span>
+    <div class="spinner" id="spinner"></div>
+  </button>
+
+  <div class="msg msg-error"  id="msgError"></div>
+  <div class="msg msg-success" id="msgSuccess"></div>
+
+  <div class="note">
+    🔒 Your number is only used to verify your enrollment.<br>
+    Paid but can't access? Contact us on Telegram.
+  </div>
+</div>
+
+<script>
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaTWDmi2OSIeNNjsV3SZxqaEaGF7QY1X4_drae209Y9P9gPjPsKPL4oQOhIB3RGIpy/exec";
+
+function checkAccess() {
+  var mobile = document.getElementById('mobileInput').value.trim();
+  var btn    = document.getElementById('loginBtn');
+  var btnTxt = document.getElementById('btnText');
+  var spin   = document.getElementById('spinner');
+  var errBox = document.getElementById('msgError');
+  var sucBox = document.getElementById('msgSuccess');
+
+  errBox.style.display = 'none';
+  sucBox.style.display = 'none';
+
+  if (!mobile || mobile.length !== 10) {
+    showMsg('error','Please enter a valid 10-digit mobile number.');
+    document.getElementById('mobileInput').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btnTxt.textContent = 'Verifying...';
+  spin.style.display = 'block';
+
+  fetch(SCRIPT_URL, {
+    method:'POST',
+    body: JSON.stringify({ action:'verify_student', mobile: mobile })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    btn.disabled = false;
+    btnTxt.textContent = 'Access My Course →';
+    spin.style.display = 'none';
+
+    if (data.status === 'approved') {
+      showMsg('success','✓ Verified! Loading your course...');
+      sessionStorage.setItem('ha_name',   data.name   || 'Student');
+      sessionStorage.setItem('ha_mobile', mobile);
+      sessionStorage.setItem('ha_course', data.course || 'Starter Course');
+      setTimeout(function(){ window.location.href = 'course.html'; }, 1200);
+    } else if (data.status === 'denied') {
+      showMsg('error','❌ This number is not registered. Please check the number or contact support on Telegram.');
+    } else {
+      showMsg('error','Something went wrong. Please try again.');
+    }
+  })
+  .catch(function(){
+    btn.disabled = false;
+    btnTxt.textContent = 'Access My Course →';
+    spin.style.display = 'none';
+    showMsg('error','Connection error. Please check your internet and try again.');
+  });
+}
+
+function showMsg(type, text) {
+  var box = document.getElementById(type === 'error' ? 'msgError' : 'msgSuccess');
+  box.textContent = text;
+  box.style.display = 'block';
+}
+</script>
+</body>
+</html>
